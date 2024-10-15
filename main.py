@@ -16,7 +16,7 @@ def main():
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
-    print(dd.calculate_and_display_average_price(stock_data))
+    print(f'Средняя цена закрытия акций за заданный период - {dd.calculate_and_display_average_price(stock_data)}')
 
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, period)

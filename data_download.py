@@ -1,5 +1,3 @@
-from functools import total_ordering
-
 import yfinance as yf
 
 
@@ -18,5 +16,8 @@ def calculate_and_display_average_price(data):
     total = 0
     for i in data['Close']:
         total += i
-    average_price = total / len(data['Close'])
-    return f'Средняя цена закрытия акций за заданный период - {average_price}'
+    try:
+        average_price = total / len(data['Close'])
+        return average_price
+    except ZeroDivisionError:
+        return 0
