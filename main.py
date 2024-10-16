@@ -9,6 +9,7 @@ def main():
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+    threshold = input(f"Укажите порог срабатывания флуктуаций в % (например, 0.05): ")
 
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
@@ -16,7 +17,11 @@ def main():
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
+    # Calculate and display the average price
     print(f'Средняя цена закрытия акций за заданный период - {dd.calculate_and_display_average_price(stock_data)}')
+
+    # Notify if there are any strong fluctuations
+    print(dd.notify_if_strong_fluctuations(stock_data, threshold=threshold))
 
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, period)

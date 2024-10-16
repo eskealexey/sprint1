@@ -21,3 +21,16 @@ def calculate_and_display_average_price(data):
         return average_price
     except ZeroDivisionError:
         return 0
+
+
+def notify_if_strong_fluctuations(data, threshold):
+    lst = []
+    midle = calculate_and_display_average_price(data)
+    response_threshold = float(threshold) * midle / 100
+    for i in data['Close']:
+        lst.append(i)
+    difference = max(lst) - min(lst)
+    if difference > response_threshold:
+        return f'Цена акций колебалась более чем на {threshold} процент за период'
+    else:
+        return ''
