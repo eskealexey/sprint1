@@ -25,12 +25,31 @@ def calculate_and_display_average_price(data):
 
 def notify_if_strong_fluctuations(data, threshold):
     lst = []
-    midle = calculate_and_display_average_price(data)
-    response_threshold = float(threshold) * midle / 100
-    for i in data['Close']:
-        lst.append(i)
-    difference = max(lst) - min(lst)
-    if difference > response_threshold:
-        return f'Цена акций колебалась более чем на {threshold} процент за период'
-    else:
+    if threshold == '':
         return ''
+    else:
+        midle = calculate_and_display_average_price(data)
+        response_threshold = float(threshold) * midle / 100
+        for i in data['Close']:
+            lst.append(i)
+        difference = max(lst) - min(lst)
+        if difference > response_threshold:
+            return f'Цена акций колебалась более чем на {threshold} процент за период'
+        else:
+            return ''
+
+
+def create_filename(filename):
+    if filename == '':
+        return 'data.csv'
+    else:
+        if len(filename) < 4 or filename[-4:] != '.csv':
+            filename += '.csv'
+        else:
+            filename = filename
+    return filename
+
+
+def export_data_to_csv(data, filename):
+    name_csv = create_filename(filename)
+    data.to_csv(name_csv)

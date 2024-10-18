@@ -10,6 +10,7 @@ def main():
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
     threshold = input(f"Укажите порог срабатывания флуктуаций в % (например, 0.05): ")
+    filename = input("Введите имя файла для сохранения данных (например, 'stock_data.csv'): ")
 
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
@@ -22,6 +23,9 @@ def main():
 
     # Notify if there are any strong fluctuations
     print(dd.notify_if_strong_fluctuations(stock_data, threshold=threshold))
+
+    # upload stock data to a CSV file
+    dd.export_data_to_csv(stock_data, filename)
 
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, period)
