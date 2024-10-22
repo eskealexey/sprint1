@@ -1,4 +1,5 @@
 import yfinance as yf
+from pandas import DataFrame
 
 
 def fetch_stock_data(ticker, period='1mo'):
@@ -13,6 +14,10 @@ def add_moving_average(data, window_size=5):
 
 
 def calculate_and_display_average_price(data):
+    '''
+    Функция вычисляет и выводит среднюю цену за период
+    '''
+
     total = 0
     for i in data['Close']:
         total += i
@@ -24,6 +29,10 @@ def calculate_and_display_average_price(data):
 
 
 def notify_if_strong_fluctuations(data, threshold):
+    '''
+    Функция проверяет наличие сильных колебаний цены акций,
+    в случае превышения заданного порога вывводит сообщение
+    '''
     lst = []
     if threshold == '':
         return ''
@@ -40,6 +49,9 @@ def notify_if_strong_fluctuations(data, threshold):
 
 
 def create_filename(filename):
+    '''
+    Функция формирует имя файла для экспорта данных
+    '''
     if filename == '':
         return 'data.csv'
     else:
@@ -51,5 +63,23 @@ def create_filename(filename):
 
 
 def export_data_to_csv(data, filename):
+    '''
+    Функция экспортирует данные в csv файл
+    '''
     name_csv = create_filename(filename)
     data.to_csv(name_csv)
+
+
+def calc_indicators_MACD(data: DataFrame):
+    '''
+    Функция добавления индикатора MACD
+    '''
+    ema12 = data['Close'].ewm(span=12, adjust=False).mean()
+    ema26 = data['Close'].ewm(span=26, adjust=False).mean()
+    macd = ema12 - ema26
+    signal = macd.ewm(span=9, adjust=False).mean()
+    gist = macd - signal
+
+    return signal, macd, gist
+
+

@@ -24,11 +24,15 @@ def main():
     # Notify if there are any strong fluctuations
     print(dd.notify_if_strong_fluctuations(stock_data, threshold=threshold))
 
-    # upload stock data to a CSV file
+    # Upload stock data to a CSV file
     dd.export_data_to_csv(stock_data, filename)
 
+    # Adding additional technical indicators MACD
+    mdac = dd.calc_indicators_MACD(stock_data)
+    # dplt.show_MDAC(mdac)
+
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period)
+    dplt.create_and_save_plot(stock_data, ticker, period, mdac)
 
 if __name__ == "__main__":
     main()
