@@ -27,6 +27,7 @@ def create_and_save_plot(data, ticker, period, mdac, filename=None):
             plt.xlabel("Дата")
             plt.plot(dates, mdac[0].values, label='Signal')
             plt.plot(dates, mdac[1].values, label='MACD')
+            plt.legend()
             plt.xticks(rotation=45)
 
         else:
@@ -54,6 +55,7 @@ def create_and_save_plot(data, ticker, period, mdac, filename=None):
         plt.xlabel("Дата")
         plt.plot(data['Date'], mdac[0].values, label='Signal')
         plt.plot(data['Date'], mdac[1].values, label='MACD')
+        plt.legend()
         plt.xticks(rotation=45)
 
     if filename is None:
