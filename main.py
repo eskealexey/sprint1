@@ -3,17 +3,29 @@ import data_plotting as dplt
 
 
 def main():
+    period, start_date, end_date = None, None, None
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
     print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
     print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
-
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
-    period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+
+    while True:
+        flag = input("Введите 1, если вы хотите получить график за период, и 0, если хотите получить график за произвольный интервал: ")
+        if flag== '1':
+            period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+            break
+        elif flag== '0':
+            start_date = input("Введите дату начала периода (например, '2024-10-10'): ")
+            end_date = input("Введите дату конца периода (например, '2024-10-20'): ")
+            break
+        else:
+            continue
+
     threshold = input(f"Укажите порог срабатывания флуктуаций в % (например, 0.05): ")
     filename = input("Введите имя файла для сохранения данных (например, 'stock_data.csv'): ")
 
     # Fetch stock data
-    stock_data = dd.fetch_stock_data(ticker, period)
+    stock_data = dd.fetch_stock_data(ticker,period=period, start_date=start_date, end_date=end_date)
 
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
@@ -28,11 +40,10 @@ def main():
     dd.export_data_to_csv(stock_data, filename)
 
     # Adding additional technical indicators MACD
-    mdac = dd.calc_indicators_MACD(stock_data)
-    # dplt.show_MDAC(mdac)
+    macd = dd.calc_indicators_MACD(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period, mdac)
+    dplt.create_and_save_plot(stock_data, ticker, macd, period, start_date, end_date)
 
 if __name__ == "__main__":
     main()
