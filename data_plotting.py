@@ -2,8 +2,19 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def create_and_save_plot(data, ticker, mdac, period=None, start_date=None, end_date=None, filename=None):
+def create_and_save_plot(data, ticker, mdac, period=None, start_date=None, end_date=None, style=None, filename=None):
     plt.figure(figsize=(15, 9))
+
+    if style == '1':
+        pass
+    elif style == '2':
+        plt.style.use('ggplot')
+    elif style == '3':
+        plt.style.use('fivethirtyeight')
+    elif style == '4':
+        plt.style.use('dark_background')
+    elif style == '5':
+        plt.style.use('grayscale')
 
     if 'Date' not in data:
         if pd.api.types.is_datetime64_any_dtype(data.index):
@@ -57,6 +68,7 @@ def create_and_save_plot(data, ticker, mdac, period=None, start_date=None, end_d
         plt.plot(data['Date'], mdac[1].values, label='MACD')
         plt.legend()
         plt.xticks(rotation=45)
+
 
     if filename is None:
         if period is None:

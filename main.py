@@ -24,6 +24,20 @@ def main():
     threshold = input(f"Укажите порог срабатывания флуктуаций в % (например, 0.05): ")
     filename = input("Введите имя файла для сохранения данных (например, 'stock_data.csv'): ")
 
+    print('Необходимо выбрать стиль оформления графиков.')
+    print('Выберите один из следующих стилей:')
+    print('1. Стандартный')
+    print('2. "ggplot"')
+    print('3. "fivethirtyeight"')
+    print('4. "dark_background"')
+    print('5. "grayscale"')
+    while True:
+        style = input("Введите стиль графика (1, 2, 3, 4, 5): ")
+        if style not in ['1','2','3','4','5']:
+            continue
+        else:
+            break
+
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker,period=period, start_date=start_date, end_date=end_date)
 
@@ -43,7 +57,7 @@ def main():
     macd = dd.calc_indicators_MACD(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, macd, period, start_date, end_date)
+    dplt.create_and_save_plot(stock_data, ticker, macd, period, start_date, end_date, style=style)
 
 if __name__ == "__main__":
     main()
