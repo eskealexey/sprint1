@@ -56,6 +56,10 @@ def main():
     # Adding additional technical indicators MACD
     macd = dd.calc_indicators_MACD(stock_data)
 
+    # Calculating standard deviation of closing price
+    sd = dd.calculate_standard_deviation(stock_data)
+    print('Стандартное отклонение = {}'.format(sd))
+
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, macd, period, start_date, end_date, style=style)
 

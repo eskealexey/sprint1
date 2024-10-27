@@ -88,5 +88,30 @@ def calc_indicators_MACD(data: DataFrame):
     macd = ema12 - ema26
     signal = macd.ewm(span=9, adjust=False).mean()
     gist = macd - signal
-
     return signal, macd, gist
+
+
+def calculate_standard_deviation(data):
+    '''
+    Расчет стандартного отклонения для закрытия цены
+    '''
+
+    lst = []
+    n = len(data['Close'])
+    sum_ = 0
+    sum_q = 0
+
+    for i in range(n):
+        a = data['Close'].iloc[i]
+        sum_ += a
+    average_ = sum_ / n      # среднее значение данных
+
+    for j in data['Close']:
+        lst.append((j - average_) ** 2)   # Рассчитаем отклонение и возводим в квадрат
+    # Вычисляем дисперсию: находим среднее значение квадратов отклонений.
+    for q in lst:
+        sum_q += q
+    average_q = sum_q / n
+
+    ds = average_q ** 0.5  # Рассчитаем стандартное отклонение
+    return ds
