@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
+import plotly
+import plotly.graph_objs as go
+import plotly.express as px
+from plotly.graph_objs import Figure
+from plotly.subplots import make_subplots
 
 def create_and_save_plot(data, ticker, mdac, period=None, start_date=None, end_date=None, style=None, filename=None):
     plt.figure(figsize=(15, 9))
@@ -78,3 +84,45 @@ def create_and_save_plot(data, ticker, mdac, period=None, start_date=None, end_d
 
     plt.savefig(filename)
     print(f"График сохранен как {filename}")
+
+
+def show_data(data, ticker, macd):
+    '''
+    Функция для отображения данных в виде графика используя библиотеку plotly
+    '''
+    if 'Date' not in data:
+        if pd.api.types.is_datetime64_any_dtype(data.index):
+            dates = data.index.to_numpy()
+            # fig = go.Figure()
+            fig = make_subplots(rows=2, cols=1)
+
+            fig.add_trace(go.Scatter(x=dates, y=data['Close'],
+                                     mode='lines+markers',
+                                     name='Close Price'),
+                                     row=1, col=1)
+            fig.add_trace(go.Scatter(x=dates, y=data['Moving_Average'],
+                                     mode='lines+markers',
+                                     name='Moving_Average'),
+                                     row=1, col=1)
+            fig.update_layout(legend_orientation="h",
+                              legend=dict(x=.5, xanchor="center"),
+                              title=ticker.upper(),
+                              xaxis_title="Date",
+                              yaxis_title="Price",
+                              margin=dict(l=0, r=0, t=30, b=0))
+
+            fig.add_trace(go.Scatter(x=dates, y=macd[0].values,
+                                     mode='lines',
+                                     name='Signal'),
+                          row=2, col=1)
+            fig.add_trace(go.Scatter(x=dates, y=macd[1].values,
+                                     mode='lines',
+                                     name='MACD'),
+                          row=2, col=1)
+            fig.update_layout(legend_orientation="h",
+                              legend=dict(x=.5, xanchor="center"),
+                              title=ticker.upper(),
+                              xaxis_title="Date",
+                              yaxis_title="Price",
+                              margin=dict(l=0, r=0, t=30, b=0))
+            fig.show()

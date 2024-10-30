@@ -63,5 +63,8 @@ def main():
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, macd, period, start_date, end_date, style=style)
 
+    # Function for displaying data as a graph using the plotly library
+    dplt.show_data(stock_data, ticker, macd)
+
 if __name__ == "__main__":
     main()
